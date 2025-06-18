@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import (
     TaskListCreateView,
-    TaskDetailView,
+    TaskUpdateView,
     TasksByStatusView,
     TasksByPriorityView,
     TodayTasksView,
@@ -11,7 +11,7 @@ from .views import (
 urlpatterns = [
     # CRUD operations
     path('api/tasks/', TaskListCreateView.as_view(), name='task-list-create'),
-    path('api/tasks/<int:pk>/', TaskDetailView.as_view(), name='task-detail'),
+    path('api/tasks/Update/<uuid:pk>/', TaskUpdateView.as_view(), name='task-detail'),
 
     # Filtered tasks
     path('api/tasks/status/<str:status>/', TasksByStatusView.as_view(), name='tasks-by-status'),

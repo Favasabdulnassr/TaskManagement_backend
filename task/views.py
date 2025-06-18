@@ -137,13 +137,12 @@ class TaskListCreateView(generics.ListCreateAPIView):
 
 
 
-class TaskDetailView(generics.RetrieveUpdateDestroyAPIView):
-    """Retrieve, update or delete a task"""
+class TaskUpdateView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticated]
     
     def get_queryset(self):
-        return Task.objects.filter(user=self.request.user).select_related('user')
-    
+        return Task.objects.filter(user=self.request.user)
+
     def get_serializer_class(self):
         if self.request.method in ['PUT', 'PATCH']:
             return TaskUpdateSerializer

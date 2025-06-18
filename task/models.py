@@ -71,18 +71,3 @@ class Task(models.Model):
             return self.scheduled_date == timezone.now().date()
         return False
     
-    def mark_completed(self):
-        """Mark task as completed"""
-        self.status = 'completed'
-        self.completed_at = timezone.now()
-        self.save()
-    
-    def get_priority_color(self):
-        """Get color code for priority"""
-        colors = {
-            'low': '#28a745',      # Green
-            'medium': '#ffc107',   # Yellow
-            'high': '#fd7e14',     # Orange
-            'urgent': '#dc3545',   # Red
-        }
-        return colors.get(self.priority, '#6c757d')

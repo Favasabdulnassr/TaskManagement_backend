@@ -6,23 +6,18 @@ from users.models import User
 
 
 class TaskSerializer(serializers.ModelSerializer):
-    user_full_name = serializers.CharField(source='user.full_name', read_only=True)
-    is_overdue = serializers.ReadOnlyField()
+    user_firstName = serializers.CharField(source='user.first_name', read_only=True)
     is_scheduled_today = serializers.ReadOnlyField()
-    priority_color = serializers.SerializerMethodField()
     
     class Meta:
         model = Task
         fields = [
-            'id', 'user', 'user_full_name', 'title', 'description', 
+            'id', 'user', 'user_firstName', 'title', 'description', 
             'priority', 'status', 'category', 'scheduled_date', 
-            'scheduled_time', 'due_date', 'created_at', 'updated_at', 
-            'completed_at', 'is_overdue', 'is_scheduled_today', 'priority_color'
+            'created_at', 'updated_at','completed_at','is_scheduled_today', 
         ]
         read_only_fields = ['id', 'created_at', 'updated_at', 'completed_at']
-    
-    def get_priority_color(self, obj):
-        return obj.get_priority_color()
+
     
     def validate_due_date(self, value):
         """Validate that due_date is not in the past"""
@@ -43,8 +38,8 @@ class TaskCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
         fields = [
-            'title', 'description', 'priority', 'status', 'category',
-            'scheduled_date', 'scheduled_time', 'due_date'
+            'user','title', 'description', 'priority', 'status', 'category',
+            'scheduled_date'
         ]
     
     def validate_due_date(self, value):
@@ -63,10 +58,7 @@ class TaskUpdateSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Task
-        fields = [
-            'title', 'description', 'priority', 'status', 'category',
-            'scheduled_date', 'scheduled_time', 'due_date'
-        ]
+        fields = '__all__'
     
     def update(self, instance, validated_data):
         # Auto-set completed_at when status changes to completed
