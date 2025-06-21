@@ -38,6 +38,8 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         return user
 
 
+
+
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     username_field = 'email'
 

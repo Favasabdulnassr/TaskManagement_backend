@@ -70,3 +70,5 @@ class TaskUpdateSerializer(serializers.ModelSerializer):
             validated_data['completed_at'] = None
         
         return super().update(instance, validated_data)
+    
+
