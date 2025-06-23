@@ -29,7 +29,7 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG =  config('DEBUG', default=True, cast=bool)
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['taskmanagement-backend-p04e.onrender.com']
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = config('EMAIL_HOST')
@@ -107,7 +107,8 @@ DATABASES = {
     }
 }
 CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:5173'
+    'http://localhost:5173',
+    'https://taskmanagement-six-lac.vercel.app'
     
     ]
 
@@ -120,6 +121,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGIN_REGEXES = [
     r"^http://localhost:\d+$",
     r"^http://127.0.0.1:\d+$",
+     r"^https://taskmanagement-six-lac\.vercel\.app$",
 ]
 
 
