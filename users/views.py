@@ -26,36 +26,33 @@ User = get_user_model()
 class RegisterView(APIView):
     permission_classes = [AllowAny]
 
-    def post(self,request):
-        serializer = UserRegisterSerializer(data = request.data)
+    def post(self, request):
+        logger.info("Register endpoint called")
+        serializer = UserRegisterSerializer(data=request.data)
+
         if serializer.is_valid():
+            logger.info("Serializer valid")
             otp_register = serializer.validated_data['otp_register']
             recipient_mail = serializer.validated_data['email']
-
             request.session['registration_data'] = serializer.validated_data
 
             if otp_register:
-                
-                otp = str(random.randint(100000,999999))
-                request.session['otp'] = otp
-
-                expiration_time = datetime.now() + timedelta(minutes=2)
-                request.session['otp_expiration'] = expiration_time.isoformat()
-
-                
-                request.session.save()
-
-
-                
-                # Send OTP via email for all users (both students and tutors)
-                subject = 'Your 6 digit OTP for email verification'
-                message = f"Your email verification OTP is {otp}"
-                from_email = settings.EMAIL_HOST_USER
-                recipient_list = [recipient_mail]
-                
                 try:
+                    otp = str(random.randint(100000, 999999))
+                    request.session['otp'] = otp
+                    expiration_time = datetime.now() + timedelta(minutes=2)
+                    request.session['otp_expiration'] = expiration_time.isoformat()
+                    request.session.save()
+
+                    subject = 'Your 6 digit OTP for email verification'
+                    message = f"Your email verification OTP is {otp}"
+                    from_email = settings.EMAIL_HOST_USER
+                    recipient_list = [recipient_mail]
+
                     send_mail(subject, message, from_email, recipient_list, fail_silently=False)
-                    
+
+                    logger.info(f"OTP {otp} sent to {recipient_mail}")
+
                     return Response(
                         {
                             'message': 'OTP sent successfully to your email. Verify to complete registration',
@@ -64,7 +61,9 @@ class RegisterView(APIView):
                         },
                         status=status.HTTP_201_CREATED
                     )
+
                 except Exception as e:
+                    logger.exception("Failed to send OTP or session error")
                     return Response(
                         {'message': 'Failed to send OTP. Please try again.'},
                         status=status.HTTP_500_INTERNAL_SERVER_ERROR
