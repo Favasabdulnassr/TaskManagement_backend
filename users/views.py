@@ -70,10 +70,21 @@ class RegisterView(APIView):
                         status=status.HTTP_500_INTERNAL_SERVER_ERROR
                     )
             else:
-                serializer.save()
-                return Response({'message': 'Registration successful'}, status=status.HTTP_201_CREATED)
+                try:
+                    serializer.save()
+                    logger.info("User registered without OTP")
+                    return Response({'message': 'Registration successful'}, status=status.HTTP_201_CREATED)
+                except Exception as e:
+                    logger.exception("Error while saving user without OTP")  
+                    return Response(
+                        {
+                            'message': 'Something went wrong while saving the user.',
+                            'error': str(e)  
+                        },
+                        status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                    )
 
-        print("Serializer errors", serializer.errors)
+        logger.error("Serializer errors", serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 
