@@ -85,7 +85,91 @@ class RegisterView(APIView):
 
         logger.error("Serializer errors", serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
+
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+
+@method_decorator(csrf_exempt, name='dispatch')
+class ResendOtpView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        logger.info("Resend OTP endpoint called")
+
+        session_id = request.data.get('sessionId')
+        logger.info(f"Session ID received from request: {session_id}")
+
+        if not session_id:
+            logger.error("Session ID is missing in the request")
+            return Response({'error': 'Session ID is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            session = Session.objects.get(session_key=session_id)
+            logger.info("Session object retrieved successfully")
+            session_data = session.get_decoded()
+            logger.info(f"Session data decoded: {session_data}")
+        except Session.DoesNotExist:
+            logger.error("Invalid session ID. Session does not exist.")
+            return Response({'error': 'Invalid session ID'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Get email and registration data
+        registration_data = session_data.get('registration_data')
+        logger.info(f"Registration data extracted from session: {registration_data}")
+
+        if not registration_data:
+            logger.error("No registration data found in session")
+            return Response({'error': 'No registration data found in session'}, status=status.HTTP_400_BAD_REQUEST)
+
+        recipient_mail = registration_data.get('email')
+        logger.info(f"Recipient email extracted: {recipient_mail}")
+
+        if not recipient_mail:
+            logger.error("Email not found in session registration data")
+            return Response({'error': 'Email not found in session data'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            # Generate new OTP
+            new_otp = str(random.randint(100000, 999999))
+            logger.info(f"Generated new OTP: {new_otp}")
+
+            expiration_time = datetime.now() + timedelta(minutes=2)
+            logger.info(f"New OTP expiration time: {expiration_time}")
+
+            # Update session with new OTP
+            session_data['otp'] = new_otp
+            session_data['otp_expiration'] = expiration_time.isoformat()
+            session.session_data = Session.objects.encode(session_data)
+            session.save()
+            logger.info("Session updated with new OTP and expiration time")
+
+            # Send the new OTP email
+            subject = 'Resent OTP for Email Verification'
+            message = f"Your new OTP is {new_otp}"
+            from_email = settings.EMAIL_HOST_USER
+            recipient_list = [recipient_mail]
+
+            send_mail(subject, message, from_email, recipient_list, fail_silently=False)
+            logger.info(f"Sent OTP email to {recipient_mail}")
+
+            return Response(
+                {
+                    'message': 'OTP resent successfully.',
+                    'otp_expiration': expiration_time.isoformat()
+                },
+                status=status.HTTP_200_OK
+            )
+
+        except Exception as e:
+            logger.exception("Error while resending OTP")
+            return Response(
+                {'error': 'Failed to resend OTP. Please try again.', 'details': str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+
+
+
 
 
 class VerifyOtpView(APIView):
