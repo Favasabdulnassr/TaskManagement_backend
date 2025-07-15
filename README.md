@@ -39,51 +39,49 @@ A comprehensive Django-based task management application that allows users to or
 ### Setup Instructions
 
 1. **Clone the repository**
-   git clone <repository-url>
-   cd task-management
-   ```
+   - git clone <repository-url>
+   - cd task-management
+   
 
 2. **Create virtual environment**
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
+   - python -m venv venv
+   - source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 3. **Install dependencies**
-   pip install -r requirements.txt
-   ```
+   - pip install -r requirements.txt
 
 4. **Environment Configuration**
-   Create a `.env` file in the project root:
-   ```env
-   SECRET_KEY=your-secret-key-here
-   DEBUG=True
-   
-   # Database Configuration
-   DATABASE_NAME=your_database_name
-   DATABASE_USER=your_database_user
-   DATABASE_PASSWORD=your_database_password
-   DATABASE_HOST=localhost
-   DATABASE_PORT=5432
-   
-   # Email Configuration
-   EMAIL_HOST=smtp.gmail.com
-   EMAIL_PORT=587
-   EMAIL_HOST_USER=your-email@gmail.com
-   EMAIL_HOST_PASSWORD=your-app-password
-   ```
+   - Create a `.env` file in the project root:
+      ```env
+      SECRET_KEY=your-secret-key-here
+      DEBUG=True
+      
+      # Database Configuration
+      DATABASE_NAME=your_database_name
+      DATABASE_USER=your_database_user
+      DATABASE_PASSWORD=your_database_password
+      DATABASE_HOST=localhost
+      DATABASE_PORT=5432
+      
+      # Email Configuration
+      EMAIL_HOST=smtp.gmail.com
+      EMAIL_PORT=587
+      EMAIL_HOST_USER=your-email@gmail.com
+      EMAIL_HOST_PASSWORD=your-app-password
+      ```
 
 5. **Database Setup**
-   python manage.py makemigrations
-   python manage.py migrate
-   ```
+   - python manage.py makemigrations
+   - python manage.py migrate
+    ```
 
 6. **Create Superuser**
-   python manage.py createsuperuser
-   ```
+   - python manage.py createsuperuser
+    ```
 
 7. **Run Development Server**
-   python manage.py runserver
-   ```
+   - python manage.py runserver
+    ```
 
 ## Configuration
 
