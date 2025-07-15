@@ -48,8 +48,9 @@ A comprehensive Django-based task management application that allows users to or
    - source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 3. **Install dependencies**
-   - pip install -r requirements.txt
-
+   ```
+   pip install -r requirements.txt
+   ```
 4. **Environment Configuration**
    - Create a `.env` file in the project root:
       ```env
@@ -71,17 +72,17 @@ A comprehensive Django-based task management application that allows users to or
       ```
 
 5. **Database Setup**
-   - python manage.py makemigrations
-   - python manage.py migrate
-    ```
+   python manage.py makemigrations
+   python manage.py migrate
+   ```
 
 6. **Create Superuser**
-   - python manage.py createsuperuser
-    ```
+   python manage.py createsuperuser
+   ```
 
 7. **Run Development Server**
-   - python manage.py runserver
-    ```
+   python manage.py runserver
+   ```
 
 ## Configuration
 
