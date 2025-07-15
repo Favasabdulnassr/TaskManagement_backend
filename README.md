@@ -32,21 +32,21 @@ A comprehensive Django-based task management application that allows users to or
 ## Installation
 
 ### Prerequisites
-- Python 3.8+
+```- Python 3.8+
 - PostgreSQL
 - pip (Python package manager)
-
+```
 ### Setup Instructions
 
 1. **Clone the repository**
-   - git clone <repository-url>
+   ```- git clone <repository-url>
    - cd task-management
-   
+   ```
 
 2. **Create virtual environment**
-   - python -m venv venv
+  ``` - python -m venv venv
    - source venv/bin/activate  # On Windows: venv\Scripts\activate
-
+```
 3. **Install dependencies**
    ```
    pip install -r requirements.txt
@@ -72,16 +72,18 @@ A comprehensive Django-based task management application that allows users to or
       ```
 
 5. **Database Setup**
-   python manage.py makemigrations
+  ``` python manage.py makemigrations
    python manage.py migrate
    ```
 
 6. **Create Superuser**
+```
    python manage.py createsuperuser
-   ```
+```   
+   
 
 7. **Run Development Server**
-   python manage.py runserver
+   ```python manage.py runserver
    ```
 
 ## Configuration
