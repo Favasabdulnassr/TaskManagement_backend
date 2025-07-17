@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from .models import User
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+import re
+
 
 
 from rest_framework import serializers
@@ -88,3 +90,23 @@ class UserSerializer(serializers.ModelSerializer):
         slug_field='codename',
         queryset=User.user_permissions.through.objects.all()  # or Permission.objects.all()
     )
+
+
+    def validate_first_name(self, value):
+        if not value.isalpha():
+            raise serializers.ValidationError("First name should contain only letters.")
+        return value
+
+    def validate_last_name(self, value):
+        if value:  
+            if not value.isalpha():
+                raise serializers.ValidationError("Last name should contain only letters.")
+        return value
+
+    def validate_phone_number(self, value):
+        if not value:
+            return value  
+
+        if not re.fullmatch(r'\d{10}', value):
+            raise serializers.ValidationError("Phone number must be exactly 10 digits.")
+        return value

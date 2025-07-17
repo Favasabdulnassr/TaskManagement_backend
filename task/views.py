@@ -31,16 +31,12 @@ class TaskListCreateView(generics.ListCreateAPIView):
         
         if status:
             queryset = queryset.filter(status=status)
-            print('sssssssssssssssss',queryset)
         if priority:
             queryset = queryset.filter(priority=priority)
-            print('ppppppppppppppppp',queryset)
         if category:
             queryset = queryset.filter(category=category)
-            print('ccccccccccccccc',queryset)
         if scheduled_date:
             queryset = queryset.filter(scheduled_date=scheduled_date)
-            print('sccccccsscasceadca',queryset)
             
         return queryset
     
