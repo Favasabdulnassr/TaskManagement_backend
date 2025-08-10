@@ -48,7 +48,6 @@ class TaskListCreateView(generics.ListCreateAPIView):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         if not serializer.is_valid():
-            print(serializer.errors)  # Check console for errors
             return Response(serializer.errors, status=400)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
@@ -64,6 +63,7 @@ class TaskUpdateView(generics.RetrieveUpdateDestroyAPIView):
 
     def get_serializer_class(self):
         if self.request.method in ['PUT', 'PATCH']:
+            
             return TaskUpdateSerializer
         return TaskSerializer
 

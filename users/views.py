@@ -235,14 +235,11 @@ class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
     def post(self, request, *args, **kwargs):
-        print("Request data:", request.data)  # 🪵 See incoming data
         serializer = self.get_serializer(data=request.data)
 
         try:
             serializer.is_valid(raise_exception=True)
         except Exception as e:
-            print("Error:", e)
-            print("Serializer errors:", serializer.errors)
             return Response({"error": str(e), "details": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(serializer.validated_data, status=status.HTTP_200_OK)

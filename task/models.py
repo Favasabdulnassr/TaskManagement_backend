@@ -20,6 +20,7 @@ class Task(models.Model):
         ('completed', 'Completed'),
         ('cancelled', 'Cancelled'),
         ('overdue', 'Overdue'),
+        ('dofuture','DoFuture')
     ]
     
     CATEGORY_CHOICES = [
