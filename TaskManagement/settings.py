@@ -29,7 +29,7 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG =  config('DEBUG', default=True, cast=bool)
 
 
-ALLOWED_HOSTS = ['taskmanagement-backend-p04e.onrender.com','127.0.0.1']
+ALLOWED_HOSTS = ['taskmanagement-backend-dnzu.onrender.com','127.0.0.1']
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = config('EMAIL_HOST')
