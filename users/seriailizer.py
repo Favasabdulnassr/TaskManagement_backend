@@ -104,9 +104,25 @@ class UserSerializer(serializers.ModelSerializer):
         return value
 
     def validate_phone_number(self, value):
-        if not value:
-            return value  
+    # 1. Digits only
+        if not value.isdigit():
+            raise serializers.ValidationError("Phone number must contain only digits.")
 
-        if not re.fullmatch(r'\d{10}', value):
+        # 2. Exactly 10 digits
+        if len(value) != 10:
             raise serializers.ValidationError("Phone number must be exactly 10 digits.")
+
+        # 3. Not all zeros
+        if value == "0000000000":
+            raise serializers.ValidationError("Phone number cannot be all zeros.")
+
+        # 4. No more than 5 identical consecutive digits
+        if re.search(r'(\d)\1{5,}', value):
+            raise serializers.ValidationError("Phone number cannot contain more than 5 identical digits in a row.")
+
+        # 5. Unique check (exclude current user)
+        user = self.context['request'].user
+        if User.objects.exclude(pk=user.pk).filter(phone_number=value).exists():
+            raise serializers.ValidationError("This phone number is already in use.")
+
         return value

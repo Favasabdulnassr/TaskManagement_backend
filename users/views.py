@@ -251,7 +251,7 @@ class ProfileUpdateView(APIView):
     permission_classes = [IsAuthenticated]
 
     def put(self,request):
-        serializer = UserSerializer(request.user,data=request.data,partial=True)
+        serializer = UserSerializer(request.user,data=request.data,partial=True,context={'request': request})
         
         if serializer.is_valid():
             serializer.save()
